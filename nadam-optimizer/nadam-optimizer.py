@@ -1,0 +1,12 @@
+import numpy as np
+
+def nadam_step(w, m, v, grad, lr=0.002, beta1=0.9, beta2=0.999, eps=1e-8):
+    w = np.asarray(w, dtype=float)
+    m = np.asarray(m, dtype=float)
+    v = np.asarray(v, dtype=float)
+    grad = np.asarray(grad, dtype=float)
+    new_m = beta1 * m + (1.0 - beta1) * grad
+    new_v = beta2 * v + (1.0 - beta2) * grad ** 2
+    nesterov_m = beta1 * new_m + (1.0 - beta1) * grad
+    new_w = w - lr * nesterov_m / (np.sqrt(new_v) + eps)
+    return {"new_w": new_w, "new_m": new_m, "new_v": new_v}
